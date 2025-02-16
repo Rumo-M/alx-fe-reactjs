@@ -8,9 +8,9 @@ function App() {
   return (
     <div>
       <WelcomeMessage />
-      <Header/>
-      <MainContent/>
-      <Footer/>
+      <Header />
+      <MainContent />
+      <Footer />
     </div>
   )
 }
