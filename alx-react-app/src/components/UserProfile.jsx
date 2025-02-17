@@ -1,7 +1,3 @@
-UserProfile.js
-
-jsx
-import React from 'react';
 
 const UserProfile = (props) => {
   return (
