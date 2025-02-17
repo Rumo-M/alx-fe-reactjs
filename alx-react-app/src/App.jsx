@@ -3,8 +3,8 @@ import WelcomeMessage from './components/WelcomeMessage'
 import Header from './components/Header'
 import MainContent from './components/MainContent'
 import Footer from './components/Footer'
-import React from 'react';
-import UserProfile from './UserProfile';
+import React from './conponent/react';
+import UserProfile from './component/UserProfile';
 
 
 function App() {
