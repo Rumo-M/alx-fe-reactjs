@@ -1,16 +1,10 @@
-  // RecipeDetails component
-  import { useRecipeStore } from './recipeStore';
+// components/DeleteRecipeButton.js
+import { useRecipeStore } from '../store/recipeStore';
 
-  const RecipeDetails = ({ recipeId }) => {
-    const recipe = useRecipeStore(state =>
-      state.recipes.find(recipe => recipe.id === recipeId)
-    );
+const DeleteRecipeButton = ({ recipeId, onDelete }) => {
+  const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
 
-    return (
-      <div>
-        <h1>{recipe.title}</h1>
-        <p>{recipe.description}</p>
-        {/* Render EditRecipeForm and DeleteRecipeButton here */}
-      </div>
-    );
-  };
+  return <button onClick={() => { deleteRecipe(recipeId); onDelete(); }}>Delete</button>;
+};
+
+export default DeleteRecipeButton;
