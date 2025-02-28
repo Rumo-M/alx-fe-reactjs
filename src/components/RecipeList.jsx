@@ -1,7 +1,6 @@
 // components/RecipeList.js
 import { useRecipeStore } from '../store/recipeStore';
 import { Link } from 'react-router-dom';
-import RecipeList from './components/lists/RecipeList'; 
 
 const RecipeList = () => {
   const recipes = useRecipeStore((state) => state.recipes);
