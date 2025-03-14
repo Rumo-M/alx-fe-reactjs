@@ -1,25 +1,21 @@
-import React from 'react';
-import { useRecipeStore } from '../store/recipeStore';
+import useRecipeStore  from './recipeStore';
 
 const FavoritesList = () => {
-  const { favorites, recipes } = useRecipeStore();
-  const favoriteRecipes = recipes.filter((recipe) => favorites.includes(recipe.id));
+  const favorites = useRecipeStore(state => state.favorites) || [];
+  const removeFavorite = useRecipeStore(state => state.removeFavorite);
 
   return (
     <div>
-      <h2>My Favorites ❤️</h2>
-      {favoriteRecipes.length === 0 ? (
-        <p>No favorite recipes yet.</p>
-      ) : (
-        favoriteRecipes.map((recipe) => (
-          <div key={recipe.id}>
-            <h3>{recipe.title}</h3>
-            <p>{recipe.description}</p>
-          </div>
-        ))
-      )}
+      <h2>My Favorites</h2>
+      {favorites.map(recipe => (
+        <div key={recipe.id}>
+          <h3>{recipe.title}</h3>
+          <p>{recipe.description}</p>
+          <button onClick={() => removeFavorite(recipe.id)}>Remove from favourite</button>
+        </div>
+      ))}
+      
     </div>
   );
 };
-
 export default FavoritesList;
