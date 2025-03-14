@@ -1,14 +1,34 @@
-import React from 'react';
-import AddRecipeForm from './components/AddRecipeForm'; 
+import "./App.css"
+import useRecipeStore from "./components/recipeStore";
+import AddRecipeForm from "./components/AddRecipeForm";
+import RecipeList from "./components/RecipeList";
+import RecipeDetails from "./components/RecipeDetails";
+import DeleteRecipe from "./components/DeleteRecipeButton";
+import EditRecipeForm from "./components/EditRecipeForm";
+import FavoritesList from "./components/FavoritesList";
+import Navbar from "./components/Navbar";
+import SearchBar from "./components/SearchBar";
 
-function App() {
+function App(){
+
   return (
-    <div className="App">
-      <h1>My Recipe App</h1>
-      <AddRecipeForm />
-      {/* ... your other app content ... */}
-    </div>
-  );
-}
-
-export default App;
+ <>
+ <SearchBar />
+ {/* <DeleteRecipe /> */}
+ {/* Router */}
+   <div>
+     <Navbar/>
+   <Routes>
+     <Route path="/"  element = {<Home/>} />
+     <Route path="/add-recipe"  element = {<AddRecipeForm/>} />
+     <Route path="/recipe" element = {<RecipeList/>} />
+     <Route path="/favorite"  element = {<FavoritesList/>} />
+     <Route path="/recommended"  element = {<Recommended/>} />
+  </Routes>
+   </div>
+  
+     
+ 
+ </>
+ )}
+ export default App;
