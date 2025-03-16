@@ -1,8 +1,9 @@
+// src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';  // Ensure this file exists
-import Login from './pages/Login';  // Ensure this file exists
-import Profile from './pages/Profile';  // Ensure this file exists
-import NotFound from './pages/NotFound';  // Ensure this file exists
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Profile from './components/Profile';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -10,7 +11,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+        
+        {/* Nested Profile Route */}
+        <Route path="/profile/*" element={<Profile />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
