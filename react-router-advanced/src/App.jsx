@@ -2,8 +2,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Profile from './components/Profile';
 import NotFound from './pages/NotFound';
+import BlogPost from './components/BlogPost';  // Import the BlogPost component
 
 function App() {
   return (
@@ -11,10 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        
-        {/* Nested Profile Route */}
-        <Route path="/profile/*" element={<Profile />} />
-        
+        <Route path="/blog/:id" element={<BlogPost />} /> {/* Dynamic route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
