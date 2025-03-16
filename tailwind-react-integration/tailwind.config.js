@@ -1,11 +1,11 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  darkMode: 'class',
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"], // Purge unused styles
+  darkMode: 'class', // Use class-based dark mode
   theme: {
-    extend: {}
+    extend: {},
   },
   variants: {
-    extend: {}
+    extend: {},
   },
-  plugins: []
+  plugins: [],
 };
