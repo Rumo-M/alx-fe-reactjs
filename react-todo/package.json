@@ -13,15 +13,17 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "test": "jest"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "jest",
+    "eject": "react-scripts eject"
   },
   "jest": {
     "testEnvironment": "jsdom"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
