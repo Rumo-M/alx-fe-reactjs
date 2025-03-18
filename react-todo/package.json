@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-scripts": "^5.0.1",
     "serialize-javascript": "^6.0.2",
     "sockjs-client": "^1.6.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/user-event": "^13.5.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -18,13 +18,11 @@
     "test": "jest",
     "eject": "react-scripts eject"
   },
+  "eslintConfig": {
+    "extends": ["react-app"]
+  },
   "jest": {
     "testEnvironment": "jsdom"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
   },
   "browserslist": {
     "production": [
@@ -42,6 +40,9 @@
     "@babel/preset-react": "^7.26.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "eslint": "^7.32.0",                  // Make sure eslint is installed with the correct version
+    "eslint-plugin-react": "^7.26.1",     // Ensure eslint-plugin-react is compatible
+    "eslint-config-react-app": "^5.0.2"   // This is important for default react configuration
   }
 }
