@@ -1,10 +1,3 @@
-on file in the src directory with the following structure:
-
-src/data.json
-
-json
-Copy
-Edit
 [
   {
     "id": 1,
