@@ -4,47 +4,60 @@ function AddRecipeForm({ onRecipeSubmit }) {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [steps, setSteps] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const errors = {};
+    if (!title.trim()) errors.title = "Title is required.";
+    if (!ingredients.trim()) errors.ingredients = "Ingredients are required.";
+    if (!steps.trim()) errors.steps = "Steps are required.";
+
+    const ingredientsArray = ingredients.split(",").map((item) => item.trim());
+    if (ingredientsArray.length < 2) errors.ingredients = "Please add at least two ingredients.";
+
+    return errors;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validation: Check if fields are filled
-    if (!title.trim() || !ingredients.trim() || !steps.trim()) {
-      setError("All fields are required.");
-      return;
+    // Validate form
+    const validationErrors = validate();
+    setErrors(validationErrors);
+
+    // If no errors, submit the form
+    if (Object.keys(validationErrors).length === 0) {
+      const ingredientsArray = ingredients.split(",").map((item) => item.trim());
+      const newRecipe = {
+        id: Date.now(),
+        name: title,
+        ingredients: ingredientsArray,
+        instructions: steps.split(".").map((step) => step.trim()),
+      };
+
+      // Submit the new recipe
+      onRecipeSubmit(newRecipe);
+
+      // Reset form
+      setTitle("");
+      setIngredients("");
+      setSteps("");
     }
-
-    // Validation: Ensure at least 2 ingredients
-    const ingredientsArray = ingredients.split(",").map((item) => item.trim());
-    if (ingredientsArray.length < 2) {
-      setError("Please add at least two ingredients.");
-      return;
-    }
-
-    // Create new recipe object
-    const newRecipe = {
-      id: Date.now(), // Generate a unique ID
-      name: title,
-      ingredients: ingredientsArray,
-      instructions: steps.split(".").map((step) => step.trim()), // Split steps into an array
-    };
-
-    // Submit the new recipe
-    onRecipeSubmit(newRecipe);
-
-    // Reset form
-    setTitle("");
-    setIngredients("");
-    setSteps("");
-    setError("");
   };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Add a New Recipe</h2>
-      {error && <p className="text-red-500 mb-3">{error}</p>}
-      
+
+      {/* Display Errors */}
+      {Object.keys(errors).length > 0 && (
+        <div className="text-red-500 mb-3">
+          {Object.values(errors).map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Recipe Title */}
         <div>
@@ -56,6 +69,7 @@ function AddRecipeForm({ onRecipeSubmit }) {
             className="w-full p-2 border border-gray-300 rounded mt-1 focus:ring focus:ring-blue-300"
             placeholder="Enter recipe title"
           />
+          {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
         </div>
 
         {/* Ingredients */}
@@ -67,6 +81,7 @@ function AddRecipeForm({ onRecipeSubmit }) {
             className="w-full p-2 border border-gray-300 rounded mt-1 focus:ring focus:ring-blue-300"
             placeholder="E.g., Chicken, Salt, Pepper"
           />
+          {errors.ingredients && <p className="text-red-500 text-sm">{errors.ingredients}</p>}
         </div>
 
         {/* Preparation Steps */}
@@ -78,6 +93,7 @@ function AddRecipeForm({ onRecipeSubmit }) {
             className="w-full p-2 border border-gray-300 rounded mt-1 focus:ring focus:ring-blue-300"
             placeholder="Step 1. Step 2. Step 3."
           />
+          {errors.steps && <p className="text-red-500 text-sm">{errors.steps}</p>}
         </div>
 
         {/* Submit Button */}
