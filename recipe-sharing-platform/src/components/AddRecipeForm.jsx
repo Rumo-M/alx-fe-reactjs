@@ -27,36 +27,49 @@ function AddRecipeForm() {
   };
 
   return (
-    <div className="max-w-md md:max-w-md mx-auto">
-      <h2>Add Recipe</h2>
+    <div className="max-w-md md:max-w-md mx-auto p-4 shadow-md rounded">
+      <h2 className="text-2xl font-bold mb-4">Add Recipe</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
+        <div className="mb-4">
+          <label className="text-lg font-medium" htmlFor="title">Title:</label>
           <input
             type="text"
+            id="title"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
+            className="w-full p-2 text-lg font-medium border border-gray-300 rounded"
           />
-          {errors.title && <div style={{ color: 'red' }}>{errors.title}</div>}
+          {errors.title && <div className="text-red-500 text-lg font-medium">{errors.title}</div>}
         </div>
-        <div>
-          <label>Ingredients:</label>
+        <div className="mb-4">
+          <label className="text-lg font-medium" htmlFor="ingredients">Ingredients:</label>
           <textarea
+            id="ingredients"
             value={ingredients}
             onChange={(event) => setIngredients(event.target.value)}
+            className="w-full p-2 text-lg font-medium border border-gray-300 rounded"
           />
-          {errors.ingredients && <div style={{ color: 'red' }}>{errors.ingredients}</div>}
+          {errors.ingredients && <div className="text-red-500 text-lg font-medium">{errors.ingredients}</div>}
         </div>
-        <div>
-          <label>Steps:</label>
+        <div className="mb-4">
+          <label className="text-lg font-medium" htmlFor="steps">Steps:</label>
           <textarea
+            id="steps"
             value={steps}
             onChange={(event) => setSteps(event.target.value)}
+            className="w-full p-2 text-lg font-medium border border-gray-300 rounded"
           />
-          {errors.steps && <div style={{ color: 'red' }}>{errors.steps}</div>}
+          {errors.steps && <div className="text-red-500 text-lg font-medium">{errors.steps}</div>}
         </div>
-        <button type="submit">Add Recipe</button>
-        <Link to="/">Back to Home</Link>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Add Recipe
+        </button>
+        <Link to="/" className="text-blue-500 hover:text-blue-700 font-medium">
+          Back to Home
+        </Link>
       </form>
     </div>
   );
