@@ -1,5 +1,5 @@
 {
-    "recipes": [
+    "recipes" [
       {
         "id": 1,
         "name": "Spaghetti Bolognese",
@@ -23,5 +23,3 @@
       }
     ]
   }
-  
-  
