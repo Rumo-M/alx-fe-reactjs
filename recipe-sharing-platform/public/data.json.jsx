@@ -1,46 +1,14 @@
-{
-  "recipes": [
-    {
-      "id": 1,
-      "name": "Spaghetti Bolognese",
-      "image": "/images/spaghetti.jpg",
-      "ingredients": [
-        "Spaghetti",
-        "Ground beef",
-        "Tomato sauce",
-        "Onion",
-        "Garlic",
-        "Salt",
-        "Pepper"
-      ],
-      "instructions": [
-        "Boil spaghetti according to package instructions.",
-        "In a pan, cook ground beef until brown.",
-        "Add chopped onion and garlic, sauté until fragrant.",
-        "Pour in tomato sauce and season with salt and pepper.",
-        "Simmer for 15 minutes and serve over spaghetti."
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Chicken Curry",
-      "image": "/images/chicken_curry.jpg",
-      "ingredients": [
-        "Chicken",
-        "Curry powder",
-        "Coconut milk",
-        "Onion",
-        "Garlic",
-        "Ginger",
-        "Rice"
-      ],
-      "instructions": [
-        "Cook chicken in a pan until browned.",
-        "Add chopped onion, garlic, and ginger, and sauté.",
-        "Pour in coconut milk and curry powder.",
-        "Simmer for 20 minutes.",
-        "Serve with rice."
-      ]
-    }
-  ]
-}
+// src/data.json
+[
+  {
+    "id": 1,
+    "title": "Spaghetti Carbonara",
+    "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 2,
+    "title": "Chicken Tikka Masala",
+    "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato-based gravy.",
+    "image": "https://via.placeholder.com/150"
+  }
