@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import data from "../data.json";
+import recipeData from '../data.json';
+
 
 function HomePage() {
   return (
