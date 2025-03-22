@@ -1,11 +1,27 @@
-{
-  "recipes" [
+[
     {
       "id": 1,
-      "name": "Spaghetti Bolognese",
-      "image": "/images/spaghetti.jpg",
-      "ingredients": ["Spaghetti", "Ground beef", "Tomato sauce", "Onion", "Garlic", "Salt", "Pepper"],
-      "instructions": ["Boil spaghetti according to package instructions.", "In a pan, cook ground beef until brown.", "Add chopped onion and garlic, sauté until fragrant.", "Pour in tomato sauce and season with salt and pepper.", "Simmer for 15 minutes and serve over spaghetti." ]
+      "title": "Spaghetti Carbonara",
+      "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
+      "image": "https://via.placeholder.com/300x200"
+    },
+    {
+      "id": 2,
+      "title": "Chicken Tikka Masala",
+      "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato-based gravy.",
+      "image": "https://via.placeholder.com/300x200"
+    },
+    {
+      "id": 3,
+      "title": "Sushi Rolls",
+      "summary": "Japanese delicacy made with vinegared rice, fresh fish, and seaweed.",
+      "image": "https://via.placeholder.com/300x200"
+    },
+    {
+      "id": 4,
+      "title": "Avocado Toast",
+      "summary": "Toasted bread topped with mashed avocado, seasonings, and optional toppings.",
+      "image": "https://via.placeholder.com/300x200"
     }
   ]
-}
+  
