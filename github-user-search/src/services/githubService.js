@@ -1,13 +1,13 @@
 // src/services/githubService.js
 import axios from 'axios';
 
-const apiUrl = 'https://api.github.com/search/users?q';
-const userDataUrl = 'https://api.github.com/users/';
+const apiUrl = 'https://api.github.com/search/users?q=';
 
 const githubService = {
-  searchUsers: async (query) => {
+  searchUsers: async (query, location, minRepos) => {
     try {
-      const response = await axios.get(`${apiUrl}=${query}`);
+      const queryParams = `${query}+location:${location}+repos:>${minRepos}`;
+      const response = await axios.get(`${apiUrl}${queryParams}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -16,7 +16,7 @@ const githubService = {
 
   fetchUserData: async (username) => {
     try {
-      const response = await axios.get(`${userDataUrl}${username}`);
+      const response = await axios.get(`https://api.github.com/users/${username}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -25,5 +25,3 @@ const githubService = {
 };
 
 export default githubService;
-
-
