@@ -1,13 +1,14 @@
-import React from 'react';
-import Search from './components/Search';
+import React from "react";
+import Search from "./components/Search"; // ✅ Correct import
 
 function App() {
   return (
-    <div className="App">
-      <h1>GitHub User Search</h1>
+    <div>
+      <h1 className="text-center text-2xl font-bold">GitHub User Search</h1>
       <Search />
     </div>
   );
 }
 
 export default App;
+

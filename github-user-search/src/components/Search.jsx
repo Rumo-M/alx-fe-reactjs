@@ -1,80 +1,76 @@
-import React, { useState } from 'react';
-import { fetchUsers } from '../services/githubService';
+import React, { useState } from "react";
+import fetchUserData from "../services/githubService"; // ✅ Correct import
 
 const Search = () => {
-  const [username, setUsername] = useState('');
-  const [location, setLocation] = useState('');
-  const [minRepos, setMinRepos] = useState('');
-  const [users, setUsers] = useState([]);
+  const [query, setQuery] = useState("");
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSearch = async (event) => {
+    event.preventDefault();
     setLoading(true);
     setError(null);
-    setUsers([]);
+    setUser(null);
 
     try {
-      const data = await fetchUsers(username, location, minRepos);
-      if (data.items.length === 0) {
-        setError("Looks like we can't find any users with the given criteria.");
+      const data = await fetchUserData(query);
+      if (data) {
+        setUser(data);
       } else {
-        setUsers(data.items);
+        setError("Looks like we can't find the user");
       }
     } catch (err) {
-      setError("An error occurred while fetching users.");
+      setError("Looks like we can't find the user");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
-      <form onSubmit={handleSubmit} className="mb-4 space-y-4">
+    <div className="max-w-md mx-auto p-5 text-center">
+      {/* Search Form */}
+      <form onSubmit={handleSearch} className="mb-5">
         <input
           type="text"
-          placeholder="GitHub Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-2 border rounded"
+          placeholder="Search GitHub Users..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="p-2 w-4/5 border border-gray-300 rounded"
         />
-        <input
-          type="text"
-          placeholder="Location (e.g., New York)"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="number"
-          placeholder="Minimum Repositories"
-          value={minRepos}
-          onChange={(e) => setMinRepos(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+        <button
+          type="submit"
+          className="ml-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+        >
           Search
         </button>
       </form>
 
-      {loading && <p>Loading...</p>}
+      {/* Loading State */}
+      {loading && <p className="text-gray-500">Loading...</p>}
+
+      {/* Error Message */}
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="mt-4">
-        {users.map((user) => (
-          <div key={user.id} className="flex items-center p-3 bg-white rounded shadow mb-2">
-            <img src={user.avatar_url} alt={user.login} className="w-12 h-12 rounded-full mr-4" />
-            <div>
-              <h3 className="text-lg font-semibold">{user.login}</h3>
-              <p>{user.location || 'Location not available'}</p>
-              <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-                View Profile
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* User Info */}
+      {user && (
+        <div className="mt-5 p-4 border border-gray-300 rounded-lg bg-gray-100">
+          <img
+            className="rounded-full w-20 h-20 mx-auto"
+            src={user.avatar_url}
+            alt={user.login}
+          />
+          <h2 className="text-lg font-semibold">{user.login}</h2>
+          <a
+            href={user.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            View Profile
+          </a>
+        </div>
+      )}
     </div>
   );
 };
