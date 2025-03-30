@@ -1,55 +1,80 @@
 import React, { useState } from 'react';
-import { fetchUserData } from '../services/githubService'; // Import the API service
+import { fetchUsers } from '../services/githubService';
 
 const Search = () => {
-  const [username, setUsername] = useState(''); // State to hold the input value
-  const [userData, setUserData] = useState(null); // State to hold user data from API
-  const [error, setError] = useState(null); // State to hold error messages
-  const [loading, setLoading] = useState(false); // State to manage loading status
+  const [username, setUsername] = useState('');
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the form from reloading the page
-    setLoading(true); // Set loading to true
-    setError(null); // Clear any previous error
-    setUserData(null); // Clear previous user data
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setUsers([]);
 
     try {
-      const data = await fetchUserData(username); // Fetch user data using the provided username
-      setUserData(data); // Update the userData state with the response
+      const data = await fetchUsers(username, location, minRepos);
+      if (data.items.length === 0) {
+        setError("Looks like we can't find any users with the given criteria.");
+      } else {
+        setUsers(data.items);
+      }
     } catch (err) {
-      setError("Looks like we can't find the user"); // Show error if user not found
+      setError("An error occurred while fetching users.");
     } finally {
-      setLoading(false); // Set loading to false after the request is complete
+      setLoading(false);
     }
   };
 
   return (
-    <div className="search-container">
-      <form onSubmit={handleSubmit} className="mb-4">
+    <div className="max-w-2xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+      <form onSubmit={handleSubmit} className="mb-4 space-y-4">
         <input
           type="text"
-          placeholder="Enter GitHub username"
+          placeholder="GitHub Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)} // Capture the value from input field
-          className="input"
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full p-2 border rounded"
         />
-        <button type="submit" className="btn-search">Search</button> {/* Button to trigger form submit */}
+        <input
+          type="text"
+          placeholder="Location (e.g., New York)"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+        <input
+          type="number"
+          placeholder="Minimum Repositories"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+          Search
+        </button>
       </form>
 
-      {loading && <p>Loading...</p>} {/* Show loading message while data is fetching */}
-      {error && <p className="text-red-500">{error}</p>} {/* Show error message if user not found */}
-      
-      {userData && (
-        <div className="user-card">
-          <img src={userData.avatar_url} alt={userData.login} className="avatar" /> {/* Display avatar image */}
-          <h2>{userData.name || userData.login}</h2> {/* Display name or login if name is not available */}
-          <p>{userData.bio || "No bio available"}</p> {/* Display bio or fallback text */}
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-            View Profile
-          </a>
-        </div>
-      )}
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+
+      <div className="mt-4">
+        {users.map((user) => (
+          <div key={user.id} className="flex items-center p-3 bg-white rounded shadow mb-2">
+            <img src={user.avatar_url} alt={user.login} className="w-12 h-12 rounded-full mr-4" />
+            <div>
+              <h3 className="text-lg font-semibold">{user.login}</h3>
+              <p>{user.location || 'Location not available'}</p>
+              <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                View Profile
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
