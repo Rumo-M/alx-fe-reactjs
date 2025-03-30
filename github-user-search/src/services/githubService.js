@@ -1,31 +1,47 @@
-// src/services/githubService.js
-import axios from 'axios';
+// src/components/Search.jsx
+import React, { useState } from 'react';
+import githubService from '../services/githubService';
 
-const apiUrl = 'https://api.github.com/search/users?q';
-const userDataUrl = 'https://api.github.com/users/';
+const Search = () => {
+  const [username, setUsername] = useState('');
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
 
-const githubService = {
-  searchUsers: async (query) => {
+  const handleSearch = async () => {
     try {
-      const response = await axios.get(`${apiUrl}=${query}`);
-      return response.data;
+      const data = await githubService.fetchUserData(username);
+      setUserData(data);
+      setError(null);
     } catch (error) {
-      console.error(error);
-      throw error;
+      setError('Looks like we can\'t find the user');
+      setUserData(null);
     }
-  },
+  };
 
-  fetchUserData: async (username) => {
-    try {
-      const response = await axios.get(`${userDataUrl}${username}`);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  },
+  return (
+    <div>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Search for a GitHub user"
+      />
+      <button onClick={handleSearch}>Search</button>
+      {userData ? (
+        <div>
+          <h2>{userData.name}</h2>
+          <p>{userData.bio}</p>
+          <img src={userData.avatar_url} alt={userData.login} />
+        </div>
+      ) : (
+        error ? (
+          <p style={{ color: 'red' }}>{error}</p>
+        ) : (
+          <p>Enter a username to search</p>
+        )
+      )}
+    </div>
+  );
 };
 
-export default githubService;
-
-
+export default Search;
