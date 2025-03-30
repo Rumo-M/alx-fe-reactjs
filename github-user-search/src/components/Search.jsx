@@ -9,13 +9,13 @@ const Search = () => {
 
   // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent page reload on form submit
     setLoading(true); // Start loading
     setError(null); // Clear previous error
     setUserData(null); // Clear previous data
 
     try {
-      const data = await fetchUserData(username); // Fetch user data
+      const data = await fetchUserData(username); // Fetch user data from the API
       setUserData(data); // Update user data state
     } catch (err) {
-      setError('Looks like we can\'t find the user
+      setError("Looks like we can't find the user
