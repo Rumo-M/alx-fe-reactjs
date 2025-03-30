@@ -45,7 +45,11 @@ const Search = () => {
         <ul>
           {users.map((user) => (
             <li key={user.id}>
-              <h2>{user.login}</h2>
+              <h2>
+                <a href={user.html_url} target="_blank" rel="noreferrer">
+                  {user.login}
+                </a>
+              </h2>
               <p>{user.location}</p>
               <img src={user.avatar_url} alt={user.login} />
             </li>
