@@ -6,7 +6,8 @@ const Search = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleSearch = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       const data = await githubService.fetchUserData(username);
       setUserData(data);
@@ -19,13 +20,15 @@ const Search = () => {
 
   return (
     <div>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Search for a GitHub user"
-      />
-      <button onClick={handleSearch}>Search</button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Search for a GitHub user"
+        />
+        <button type="submit">Search</button>
+      </form>
       {userData ? (
         <div>
           <h2>{userData.name}</h2>
