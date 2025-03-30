@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService"; // Ensure this function is correctly implemented in githubService.js
+import { fetchUserData } from "../services/githubService"; // Make sure this function is correctly implemented in githubService.js
 
 const Search = () => {
   const [query, setQuery] = useState(""); // State to store the search query
@@ -15,48 +15,48 @@ const Search = () => {
     setUser(null); // Reset user state before new search
 
     try {
+      console.log("Fetching data for user:", query);  // Check if the query is correct
+
       // Fetch user data using the provided query
       const data = await fetchUserData(query);
 
+      console.log("Fetched user data:", data);  // Check what data is returned
+
       if (data) {
-        setUser(data); // Set user data if found
+        setUser(data); // Set the user state with the fetched data
       } else {
-        setError("Looks like we can't find the user."); // Show error if no user data is found
+        setError("Looks like we can't find the user.");  // Display error message if no user found
       }
     } catch (err) {
-      setError("An error occurred while fetching the data."); // Handle errors during the fetch request
+      console.error("Error fetching user data:", err);  // Log the error
+      setError("Looks like we can't find the user.");  // Set error message on failure
     } finally {
-      setLoading(false); // Set loading to false once the request completes
+      setLoading(false); // Set loading to false once the process is done
     }
   };
 
   return (
     <div className="search-container">
-      {/* Form for user input */}
-      <form onSubmit={handleSubmit} className="search-form">
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)} // Capture user input in query state
+          onChange={(e) => setQuery(e.target.value)} // Update query on input change
+          placeholder="Enter GitHub username"
           className="input"
-          placeholder="Search for GitHub user"
         />
         <button type="submit" className="btn-search">Search</button>
       </form>
 
-      {/* Show loading message */}
-      {loading && <p>Loading...</p>}
+      {loading && <p>Loading...</p>} {/* Show loading message */}
+      {error && <p>{error}</p>} {/* Show error message if any */}
 
-      {/* Show error message if no user is found or if there's an error */}
-      {error && <p>{error}</p>}
-
-      {/* Display user data if found */}
-      {user && !loading && (
+      {user && !loading && !error && (
         <div className="user-card">
           <img src={user.avatar_url} alt={user.login} className="avatar" />
-          <h3>{user.login}</h3>
+          <h2>{user.name || user.login}</h2>
           <p>Location: {user.location || "N/A"}</p>
-          <p>Repos: {user.public_repos}</p>
+          <p>Repositories: {user.public_repos}</p>
           <a href={user.html_url} target="_blank" rel="noopener noreferrer">
             View Profile
           </a>
@@ -67,4 +67,3 @@ const Search = () => {
 };
 
 export default Search;
-
