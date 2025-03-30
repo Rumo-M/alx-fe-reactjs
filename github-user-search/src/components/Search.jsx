@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService"; // Make sure this function is correctly implemented in githubService.js
+import { fetchUserData } from "../services/githubService"; // Ensure this function is correctly implemented in githubService.js
 
 const Search = () => {
   const [query, setQuery] = useState(""); // State to store the search query
@@ -15,21 +15,21 @@ const Search = () => {
     setUser(null); // Reset user state before new search
 
     try {
-      console.log("Fetching data for user:", query);  // Check if the query is correct
+      console.log("Fetching data for user:", query);  // Log the search query
 
       // Fetch user data using the provided query
       const data = await fetchUserData(query);
 
-      console.log("Fetched user data:", data);  // Check what data is returned
+      console.log("Fetched user data:", data);  // Log the fetched data
 
       if (data) {
         setUser(data); // Set the user state with the fetched data
       } else {
-        setError("Looks like we can't find the user.");  // Display error message if no user found
+        setError("Looks like we can't find the user.");  // Show error if user is not found
       }
     } catch (err) {
       console.error("Error fetching user data:", err);  // Log the error
-      setError("Looks like we can't find the user.");  // Set error message on failure
+      setError("Looks like we can't find the user.");  // Set error message if API request fails
     } finally {
       setLoading(false); // Set loading to false once the process is done
     }
@@ -37,19 +37,19 @@ const Search = () => {
 
   return (
     <div className="search-container">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}> {/* Attach handleSubmit to the form */}
         <input
           type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)} // Update query on input change
+          value={query} // Value bound to state
+          onChange={(e) => setQuery(e.target.value)} // Update state with input value
           placeholder="Enter GitHub username"
           className="input"
         />
-        <button type="submit" className="btn-search">Search</button>
+        <button type="submit" className="btn-search">Search</button> {/* Submit button */}
       </form>
 
-      {loading && <p>Loading...</p>} {/* Show loading message */}
-      {error && <p>{error}</p>} {/* Show error message if any */}
+      {loading && <p>Loading...</p>} {/* Show loading text while waiting for data */}
+      {error && <p>{error}</p>} {/* Show error message if user is not found */}
 
       {user && !loading && !error && (
         <div className="user-card">
@@ -67,3 +67,4 @@ const Search = () => {
 };
 
 export default Search;
+
