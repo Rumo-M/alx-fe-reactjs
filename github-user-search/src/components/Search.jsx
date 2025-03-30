@@ -7,12 +7,22 @@ const Search = () => {
   const [location, setLocation] = useState('');
   const [minRepos, setMinRepos] = useState('');
   const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const data = await githubService.searchUsers(username, location, minRepos);
       setUsers(data.items);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUserClick = async (username) => {
+    try {
+      const userData = await githubService.fetchUserData(username);
+      setSelectedUser(userData);
     } catch (error) {
       console.error(error);
     }
@@ -46,7 +56,12 @@ const Search = () => {
           {users.map((user) => (
             <li key={user.id}>
               <h2>
-                <a href={user.html_url} target="_blank" rel="noreferrer">
+                <a
+                  href={user.html_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => handleUserClick(user.login)}
+                >
                   {user.login}
                 </a>
               </h2>
@@ -56,8 +71,16 @@ const Search = () => {
           ))}
         </ul>
       )}
+      {selectedUser && (
+        <div>
+          <h2>{selectedUser.name}</h2>
+          <p>{selectedUser.bio}</p>
+          <img src={selectedUser.avatar_url} alt={selectedUser.login} />
+        </div>
+      )}
     </div>
   );
 };
 
 export default Search;
+
