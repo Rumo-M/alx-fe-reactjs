@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import fetchUserData from "../services/githubService"; // Ensure this function supports searching multiple users
+import fetchUserData from "../services/githubService"; // Updated import for the new fetchUserData function
 
 const Search = () => {
   const [query, setQuery] = useState("");
-  const [users, setUsers] = useState([]); // Array to hold multiple users
+  const [location, setLocation] = useState(""); // New state for location
+  const [minRepos, setMinRepos] = useState(0); // New state for minimum repositories
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -14,9 +16,9 @@ const Search = () => {
     setUsers([]); // Reset users before fetching
 
     try {
-      const data = await fetchUserData(query); // Expecting an array of users
-      if (data.items && data.items.length > 0) {
-        setUsers(data.items); // Store multiple users
+      const data = await fetchUserData(query, location, minRepos); // Pass location and minRepos
+      if (data && data.items && data.items.length > 0) {
+        setUsers(data.items); // Set the users data
       } else {
         setError("Looks like we can't find the user");
       }
@@ -38,9 +40,28 @@ const Search = () => {
           onChange={(e) => setQuery(e.target.value)}
           className="p-2 w-4/5 border border-gray-300 rounded"
         />
+        
+        {/* Location Input */}
+        <input
+          type="text"
+          placeholder="Location (optional)"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="p-2 w-4/5 border border-gray-300 rounded mt-2"
+        />
+
+        {/* Minimum Repositories Input */}
+        <input
+          type="number"
+          placeholder="Minimum Repositories (optional)"
+          value={minRepos}
+          onChange={(e) => setMinRepos(Number(e.target.value))}
+          className="p-2 w-4/5 border border-gray-300 rounded mt-2"
+        />
+
         <button
           type="submit"
-          className="ml-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+          className="ml-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-700 mt-2"
         >
           Search
         </button>
