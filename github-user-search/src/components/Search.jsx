@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService"; // Make sure this function is correctly implemented in githubService.js
+import { fetchUserData } from "../services/githubService"; // Ensure this function is correctly implemented in githubService.js
 
 const Search = () => {
   const [query, setQuery] = useState(""); // State to store the search query
@@ -67,3 +67,4 @@ const Search = () => {
 };
 
 export default Search;
+
