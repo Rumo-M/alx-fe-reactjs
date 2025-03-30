@@ -1,48 +1,5 @@
-/* Basic Styling for the Search Component */
-.search-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.input {
-  padding: 8px;
-  width: 80%;
-  margin-right: 8px;
-}
-
-.btn-search {
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-search:hover {
-  background-color: #0056b3;
-}
-
-.user-card {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.avatar {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-}
-
-a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
+/* Optional: Add custom styles below */
