@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import fetchUserData from "../services/githubService"; // ✅ Correct import
+import fetchUserData from "../services/githubService"; // Ensure this function supports searching multiple users
 
 const Search = () => {
   const [query, setQuery] = useState("");
-  const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]); // Array to hold multiple users
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -11,12 +11,12 @@ const Search = () => {
     event.preventDefault();
     setLoading(true);
     setError(null);
-    setUser(null);
+    setUsers([]); // Reset users before fetching
 
     try {
-      const data = await fetchUserData(query);
-      if (data) {
-        setUser(data);
+      const data = await fetchUserData(query); // Expecting an array of users
+      if (data.items && data.items.length > 0) {
+        setUsers(data.items); // Store multiple users
       } else {
         setError("Looks like we can't find the user");
       }
@@ -52,23 +52,32 @@ const Search = () => {
       {/* Error Message */}
       {error && <p className="text-red-500">{error}</p>}
 
-      {/* User Info */}
-      {user && (
-        <div className="mt-5 p-4 border border-gray-300 rounded-lg bg-gray-100">
-          <img
-            className="rounded-full w-20 h-20 mx-auto"
-            src={user.avatar_url}
-            alt={user.login}
-          />
-          <h2 className="text-lg font-semibold">{user.login}</h2>
-          <a
-            href={user.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            View Profile
-          </a>
+      {/* Users List */}
+      {users.length > 0 && (
+        <div className="mt-5 space-y-4">
+          {users.map((user) => (
+            <div
+              key={user.id}
+              className="p-4 border border-gray-300 rounded-lg bg-gray-100 flex items-center space-x-4"
+            >
+              <img
+                className="rounded-full w-16 h-16"
+                src={user.avatar_url}
+                alt={user.login}
+              />
+              <div>
+                <h2 className="text-lg font-semibold">{user.login}</h2>
+                <a
+                  href={user.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline"
+                >
+                  View Profile
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
