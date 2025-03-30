@@ -1,32 +1,32 @@
 import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService"; // Ensure this function is correctly implemented in githubService.js
+import { searchUsers } from "../services/githubService"; // Import the search function
 
 const Search = () => {
-  const [query, setQuery] = useState(""); // State to store the search query
-  const [users, setUsers] = useState([]); // State to store an array of user data
-  const [loading, setLoading] = useState(false); // State to manage loading state
-  const [error, setError] = useState(""); // State to manage error messages
+  const [query, setQuery] = useState(""); // Search query state
+  const [location, setLocation] = useState(""); // Location state
+  const [minRepos, setMinRepos] = useState(0); // Minimum repos state
+  const [users, setUsers] = useState([]); // State to store users
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(""); // Error message state
 
-  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    setLoading(true); // Set loading to true
-    setError(""); // Reset error state before each search
-    setUsers([]); // Reset users state before new search
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setUsers([]);
 
     try {
-      // Fetch user data using the provided query
-      const data = await fetchUserData(query);
-
-      if (data) {
-        setUsers([data]); // Set the users state with the fetched data (array format)
+      // Call the search function with the query, location, and minRepos
+      const data = await searchUsers(query, location, minRepos);
+      if (data.length > 0) {
+        setUsers(data);
       } else {
-        setError("Looks like we can't find the user."); // Show error if user is not found
+        setError("No users found.");
       }
     } catch (err) {
-      setError("Looks like we can't find the user."); // Set error message if API request fails
+      setError("An error occurred while fetching users.");
     } finally {
-      setLoading(false); // Set loading to false once the process is done
+      setLoading(false);
     }
   };
 
@@ -36,31 +36,47 @@ const Search = () => {
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)} // Update state with input value
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Enter GitHub username"
+          className="input"
+        />
+        <input
+          type="text"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          placeholder="Enter location (optional)"
+          className="input"
+        />
+        <input
+          type="number"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          placeholder="Minimum repos (optional)"
           className="input"
         />
         <button type="submit" className="btn-search">Search</button>
       </form>
 
-      {loading && <p>Loading...</p>} {/* Show loading text while waiting for data */}
-      {error && <p>{error}</p>} {/* Show error message if user is not found */}
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
 
-      {/* Map over users array and display each user's data */}
-      {users.length > 0 && !loading && !error && users.map((user) => (
-        <div className="user-card" key={user.id}>
-          <img src={user.avatar_url} alt={user.login} className="avatar" />
-          <h2>{user.name || user.login}</h2>
-          <p>Location: {user.location || "N/A"}</p>
-          <p>Repositories: {user.public_repos}</p>
-          <a href={user.html_url} target="_blank" rel="noopener noreferrer">
-            View Profile
-          </a>
+      {users.length > 0 && !loading && !error && (
+        <div className="user-list">
+          {users.map((user) => (
+            <div key={user.id} className="user-card">
+              <img src={user.avatar_url} alt={user.login} className="avatar" />
+              <h2>{user.login}</h2>
+              <p>Location: {user.location || "N/A"}</p>
+              <p>Repositories: {user.public_repos}</p>
+              <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+                View Profile
+              </a>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };
 
 export default Search;
-
