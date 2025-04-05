@@ -19,14 +19,17 @@ const Search = () => {
     try {
       const data = await githubService.searchUsers(username, location, minRepos);
       
+      console.log('Search result:', data); // Log the result of the API call
+
+      // Check if there are users returned
       if (data.items && data.items.length > 0) {
         setUsers(data.items);  // If users are found, display them
       } else {
         setError("Looks like we can't find the user");  // Display error message if no users found
       }
     } catch (error) {
-      console.error("Error during API call:", error);
-      setError("Something went wrong. Please try again.");  // General error message
+      console.error('Error during API call:', error);
+      setError("Something went wrong. Please try again.");  // Display generic error message on failure
     } finally {
       setLoading(false);
     }
@@ -40,8 +43,8 @@ const Search = () => {
       const userData = await githubService.fetchUserData(username);
       setSelectedUser(userData);
     } catch (error) {
-      console.error("Error fetching user data:", error);
-      setError("Could not fetch user data.");  // Error when fetching user details
+      console.error('Error fetching user data:', error);
+      setError("Could not fetch user data.");  // Handle error if fetching user details fails
     } finally {
       setLoading(false);
     }
