@@ -8,44 +8,47 @@ const Search = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(''); // Error state for handling error messages
+  const [error, setError] = useState('');
 
-  // handleSubmit function to handle form submission and fetch users
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // Start loading
-    setError('');  // Reset error message before new search
+    setLoading(true);
+    setError(''); // Reset error message before fetching
 
     try {
-      // Call the githubService.searchUsers API function
-      const data = await githubService.searchUsers(username, location, minRepos);
-      console.log("GitHub API response:", data);  // Log the response for debugging
+      // Log the search parameters to the console for debugging
+      console.log("Searching for users with:", { username, location, minRepos });
 
-      // If users are found, set the users state
+      // Call GitHub API to search for users
+      const data = await githubService.searchUsers(username, location, minRepos);
+      console.log("API Response:", data); // Log the API response to inspect it
+
+      // Check if users were returned
       if (data.items && data.items.length > 0) {
-        setUsers(data.items);
+        setUsers(data.items); // Set the users state if there are users
       } else {
-        // If no users are found, show the error message
-        setError("Looks like we can't find the user");
+        setError("Looks like we can't find the user"); // No users found
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError("Something went wrong. Please try again."); // Display generic error message
+      setError("Something went wrong. Please try again later."); // Handle any API errors
     } finally {
-      setLoading(false); // Stop loading after API call is completed
+      setLoading(false); // Stop loading once the request is complete
     }
   };
 
+  // Handle user click to fetch more details about the selected user
   const handleUserClick = async (username) => {
     setLoading(true);
-    setError(''); // Reset error before fetching selected user
+    setError(''); // Reset error before fetching user data
 
     try {
-      const userData = await githubService.fetchUserData(username);
+      const userData = await githubService.fetchUserData(username); // Fetch user data
       setSelectedUser(userData); // Set the selected user data
     } catch (error) {
       console.error("Error fetching user data:", error);
-      setError("Could not fetch user data."); // Display error if fetching user data fails
+      setError("Could not fetch user data.");
     } finally {
       setLoading(false); // Stop loading after fetching user data
     }
@@ -53,6 +56,7 @@ const Search = () => {
 
   return (
     <div>
+      {/* Search form */}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -75,13 +79,13 @@ const Search = () => {
         <button type="submit">Search</button>
       </form>
 
-      {/* Show loading message while fetching data */}
+      {/* Loading message */}
       {loading && <p>Loading...</p>}
 
-      {/* Show error message if there's an issue or no users found */}
+      {/* Error message */}
       {error && !loading && <p>{error}</p>}
 
-      {/* Render users list if there are users */}
+      {/* Display list of users if found */}
       {users.length > 0 && !loading && (
         <ul>
           {users.map((user) => (
