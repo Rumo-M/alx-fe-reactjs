@@ -17,12 +17,12 @@ const Search = () => {
     setError(''); // Reset previous error messages
 
     try {
-      // Ensure your githubService.searchUsers is returning valid data
       const data = await githubService.searchUsers(username, location, minRepos);
+      
       if (!data.items || data.items.length === 0) {
-        setError("Looks like we can't find the user"); // If no users found
+        setError("Looks like we can't find the user"); // Set the error message if no users are found
       } else {
-        setUsers(data.items);
+        setUsers(data.items); // Set the users if data is found
       }
     } catch (error) {
       console.error("Error during API call:", error);
@@ -75,7 +75,7 @@ const Search = () => {
       {loading && <p>Loading...</p>}
 
       {/* Show error message if something went wrong or no users found */}
-      {error && !loading && <p>{error}</p>}
+      {error && !loading && <p>{error}</p>}  {/* This line ensures the message "Looks like we can't find the user" will display */}
 
       {/* Render user list if available */}
       {users.length > 0 && !loading && (
