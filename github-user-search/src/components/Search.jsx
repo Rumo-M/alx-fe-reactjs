@@ -1,4 +1,3 @@
-// src/components/Search.jsx
 import React, { useState } from 'react';
 import githubService from '../services/githubService';
 
@@ -8,23 +7,38 @@ const Search = () => {
   const [minRepos, setMinRepos] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(''); // Error state
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    setError(''); // Reset error before making a new request
     try {
       const data = await githubService.searchUsers(username, location, minRepos);
+      if (data.items.length === 0) {
+        setError("Looks like we can't find the user");
+      }
       setUsers(data.items);
     } catch (error) {
       console.error(error);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleUserClick = async (username) => {
+    setLoading(true);
+    setError('');
     try {
       const userData = await githubService.fetchUserData(username);
       setSelectedUser(userData);
     } catch (error) {
       console.error(error);
+      setError("Could not fetch user data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,7 +65,12 @@ const Search = () => {
         />
         <button type="submit">Search</button>
       </form>
-      {users.length > 0 && (
+
+      {loading && <p>Loading...</p>} {/* Loading message */}
+
+      {error && !loading && <p>{error}</p>} {/* Error message */}
+
+      {users.length > 0 && !loading && (
         <ul>
           {users.map((user) => (
             <li key={user.id}>
@@ -71,7 +90,8 @@ const Search = () => {
           ))}
         </ul>
       )}
-      {selectedUser && (
+
+      {selectedUser && !loading && (
         <div>
           <h2>{selectedUser.name}</h2>
           <p>{selectedUser.bio}</p>
@@ -83,4 +103,3 @@ const Search = () => {
 };
 
 export default Search;
-
