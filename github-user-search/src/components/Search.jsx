@@ -8,28 +8,25 @@ const Search = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');  // Error message state
+  const [error, setError] = useState('');
 
   // Handle form submission and API search
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError('');  // Reset error message before every search
+    setError('');
 
     try {
       const data = await githubService.searchUsers(username, location, minRepos);
-      
-      console.log('Search result:', data); // Log the result of the API call
 
-      // Check if there are users returned
-      if (data.items && data.items.length > 0) {
-        setUsers(data.items);  // If users are found, display them
+      if (data && data.items && data.items.length > 0) {
+        setUsers(data.items);
       } else {
-        setError("Looks like we can't find the user");  // Display error message if no users found
+        setError("Looks like we can't find the user");
       }
     } catch (error) {
       console.error('Error during API call:', error);
-      setError("Something went wrong. Please try again.");  // Display generic error message on failure
+      setError(`Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -39,12 +36,13 @@ const Search = () => {
   const handleUserClick = async (username) => {
     setLoading(true);
     setError('');
+
     try {
       const userData = await githubService.fetchUserData(username);
       setSelectedUser(userData);
     } catch (error) {
       console.error('Error fetching user data:', error);
-      setError("Could not fetch user data.");  // Handle error if fetching user details fails
+      setError("Could not fetch user data.");
     } finally {
       setLoading(false);
     }
@@ -78,7 +76,7 @@ const Search = () => {
       {loading && <p>Loading...</p>}
 
       {/* Show error message if something went wrong or no users found */}
-      {error && !loading && <p>{error}</p>}  {/* Display the error message */}
+      {error && !loading && <p>{error}</p>}
 
       {/* Render the user list if there are users */}
       {users.length > 0 && !loading && (
