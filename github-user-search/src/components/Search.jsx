@@ -17,7 +17,7 @@ const Search = () => {
     try {
       const data = await githubService.searchUsers(username, location, minRepos);
       if (data.items.length === 0) {
-        setError("Looks like we can't find the user");
+        setError("Looks like we can't find the user"); // Show message if no users are found
       }
       setUsers(data.items);
     } catch (error) {
@@ -68,7 +68,7 @@ const Search = () => {
 
       {loading && <p>Loading...</p>} {/* Loading message */}
 
-      {error && !loading && <p>{error}</p>} {/* Error message */}
+      {error && !loading && <p>{error}</p>} {/* Error message, including "Looks like we can't find the user" */}
 
       {users.length > 0 && !loading && (
         <ul>
