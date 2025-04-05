@@ -8,41 +8,39 @@ const Search = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(''); // Error message state
 
-  // Handle form submission and API search
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError('');
+    setError('');  // Reset error message before every search
 
     try {
       const data = await githubService.searchUsers(username, location, minRepos);
+      console.log("Search API data:", data); // Log the result of the API call
 
-      if (data && data.items && data.items.length > 0) {
-        setUsers(data.items);
+      if (data.items && data.items.length > 0) {
+        setUsers(data.items);  // If users are found, display them
       } else {
-        setError("Looks like we can't find the user");
+        setError("Looks like we can't find the user");  // Display error message if no users found
       }
     } catch (error) {
-      console.error('Error during API call:', error);
-      setError(`Error: ${error.message}`);
+      console.error("Error during API call:", error);
+      setError("Something went wrong. Please try again.");  // Display generic error message on failure
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle user click for additional user details
   const handleUserClick = async (username) => {
     setLoading(true);
     setError('');
-
     try {
       const userData = await githubService.fetchUserData(username);
       setSelectedUser(userData);
     } catch (error) {
-      console.error('Error fetching user data:', error);
-      setError("Could not fetch user data.");
+      console.error("Error fetching user data:", error);
+      setError("Could not fetch user data.");  // Handle error if fetching user details fails
     } finally {
       setLoading(false);
     }
@@ -76,7 +74,7 @@ const Search = () => {
       {loading && <p>Loading...</p>}
 
       {/* Show error message if something went wrong or no users found */}
-      {error && !loading && <p>{error}</p>}
+      {error && !loading && <p>{error}</p>}  {/* Display the error message */}
 
       {/* Render the user list if there are users */}
       {users.length > 0 && !loading && (
