@@ -7,22 +7,22 @@ const Search = () => {
   const [minRepos, setMinRepos] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(''); // Error state
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // Handle form submission and API search
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError(''); // Reset previous error messages
+    setError('');
 
     try {
       const data = await githubService.searchUsers(username, location, minRepos);
-      
-      if (!data.items || data.items.length === 0) {
-        setError("Looks like we can't find the user"); // Set the error message if no users are found
+
+      if (data.items && data.items.length > 0) {
+        setUsers(data.items);  // Set the users if data is found
       } else {
-        setUsers(data.items); // Set the users if data is found
+        setError("Looks like we can't find the user");  // Show error if no users are found
       }
     } catch (error) {
       console.error("Error during API call:", error);
@@ -71,13 +71,10 @@ const Search = () => {
         <button type="submit">Search</button>
       </form>
 
-      {/* Show loading message while data is being fetched */}
-      {loading && <p>Loading...</p>}
+      {loading && <p>Loading...</p>} {/* Show loading message */}
 
-      {/* Show error message if something went wrong or no users found */}
-      {error && !loading && <p>{error}</p>}  {/* This line ensures the message "Looks like we can't find the user" will display */}
+      {error && !loading && <p>{error}</p>} {/* Show error message */}
 
-      {/* Render user list if available */}
       {users.length > 0 && !loading && (
         <ul>
           {users.map((user) => (
@@ -99,7 +96,6 @@ const Search = () => {
         </ul>
       )}
 
-      {/* Display selected user information */}
       {selectedUser && !loading && (
         <div>
           <h2>{selectedUser.name}</h2>
@@ -112,3 +108,4 @@ const Search = () => {
 };
 
 export default Search;
+
