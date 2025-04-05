@@ -10,24 +10,29 @@ const Search = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const [error, setError] = useState(''); // Error state
 
+  // Handle form submission and API search
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError(''); // Reset error before making a new request
+    setError(''); // Reset previous error messages
+
     try {
+      // Ensure your githubService.searchUsers is returning valid data
       const data = await githubService.searchUsers(username, location, minRepos);
-      if (data.items.length === 0) {
-        setError("Looks like we can't find the user"); // Show message if no users are found
+      if (!data.items || data.items.length === 0) {
+        setError("Looks like we can't find the user"); // If no users found
+      } else {
+        setUsers(data.items);
       }
-      setUsers(data.items);
     } catch (error) {
-      console.error(error);
+      console.error("Error during API call:", error);
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  // Handle user click for additional user details
   const handleUserClick = async (username) => {
     setLoading(true);
     setError('');
@@ -35,7 +40,7 @@ const Search = () => {
       const userData = await githubService.fetchUserData(username);
       setSelectedUser(userData);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching user data:", error);
       setError("Could not fetch user data.");
     } finally {
       setLoading(false);
@@ -66,10 +71,13 @@ const Search = () => {
         <button type="submit">Search</button>
       </form>
 
-      {loading && <p>Loading...</p>} {/* Loading message */}
+      {/* Show loading message while data is being fetched */}
+      {loading && <p>Loading...</p>}
 
-      {error && !loading && <p>{error}</p>} {/* Error message, including "Looks like we can't find the user" */}
+      {/* Show error message if something went wrong or no users found */}
+      {error && !loading && <p>{error}</p>}
 
+      {/* Render user list if available */}
       {users.length > 0 && !loading && (
         <ul>
           {users.map((user) => (
@@ -91,6 +99,7 @@ const Search = () => {
         </ul>
       )}
 
+      {/* Display selected user information */}
       {selectedUser && !loading && (
         <div>
           <h2>{selectedUser.name}</h2>
