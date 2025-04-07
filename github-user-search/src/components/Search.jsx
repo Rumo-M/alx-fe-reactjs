@@ -7,16 +7,18 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSearch = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent page reload on form submission
+
     if (!username) return;
 
     setLoading(true);
-    setError(""); // Clear previous error message
+    setError(""); // Clear any previous error messages
     try {
       const response = await axios.get(`https://api.github.com/users/${username}`);
       setUserData(response.data);
     } catch (err) {
-      // Display custom error message when user is not found
+      // Display error message if the user is not found
       setError("Looks like we can't find the user.");
     } finally {
       setLoading(false);
@@ -25,16 +27,18 @@ const Search = () => {
 
   return (
     <div className="search-container">
-      <input
-        type="text"
-        placeholder="Search for GitHub User"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="search-input"
-      />
-      <button onClick={handleSearch} className="search-button">
-        Search
-      </button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Search for GitHub User"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="search-input"
+        />
+        <button type="submit" className="search-button">
+          Search
+        </button>
+      </form>
 
       {loading && <p>Loading...</p>}
 
