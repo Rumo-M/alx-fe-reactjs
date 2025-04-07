@@ -6,7 +6,8 @@ const Search = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(""); // State to hold error messages
-
+  const [user, setUser] = useState(null);
+  
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload on form submission
 
