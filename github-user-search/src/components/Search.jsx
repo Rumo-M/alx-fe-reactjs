@@ -5,7 +5,7 @@ const Search = () => {
   const [username, setUsername] = useState("");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // State to hold error messages
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload on form submission
@@ -18,7 +18,7 @@ const Search = () => {
       const response = await axios.get(`https://api.github.com/users/${username}`);
       setUserData(response.data);
     } catch (err) {
-      // Display error message if the user is not found
+      // Set the error state with the message when the user is not found
       setError("Looks like we can't find the user.");
     } finally {
       setLoading(false);
