@@ -11,11 +11,12 @@ const Search = () => {
     if (!username) return;
 
     setLoading(true);
-    setError("");
+    setError(""); // Clear previous error message
     try {
       const response = await axios.get(`https://api.github.com/users/${username}`);
       setUserData(response.data);
     } catch (err) {
+      // Display custom error message when user is not found
       setError("Looks like we can't find the user.");
     } finally {
       setLoading(false);
@@ -37,8 +38,10 @@ const Search = () => {
 
       {loading && <p>Loading...</p>}
 
+      {/* Show error message if user is not found */}
       {error && <p className="error-text">{error}</p>}
 
+      {/* Display user details if found */}
       {userData && (
         <div className="user-details">
           <img src={userData.avatar_url} alt={userData.login} />
