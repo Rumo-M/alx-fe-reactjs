@@ -1,12 +1,10 @@
 import React from 'react';
-import TodoList from './components/TodoList';
+import TodoList from './components/TodoList.jsx'; 
 
 function App() {
   return (
     <div className="App">
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <TodoList />
-      </div>
+      <TodoList />
     </div>
   );
 }

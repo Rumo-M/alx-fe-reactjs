@@ -8,7 +8,9 @@ function TodoList() {
   ]);
 
   const addTodo = (text) => {
-    setTodos([...todos, { text, completed: false }]);
+    if (text.trim()) {
+      setTodos([...todos, { text, completed: false }]);
+    }
   };
 
   const toggleTodo = (index) => {
@@ -23,20 +25,26 @@ function TodoList() {
   };
 
   return (
-    <div>
-      <h1>Todo List</h1>
-      <ul>
+    <div className="todo-list">
+      <h1 className="text-3xl font-semibold mb-4">Todo List</h1>
+      <ul className="space-y-2">
         {todos.map((todo, index) => (
           <li
             key={index}
             onClick={() => toggleTodo(index)}
-            style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+            style={{
+              textDecoration: todo.completed ? 'line-through' : 'none',
+              cursor: 'pointer',
+            }}
+            className="flex items-center justify-between"
           >
-            {todo.text}
-            <button onClick={(e) => {
-              e.stopPropagation();
-              deleteTodo(index);
-            }}>
+            <span>{todo.text}</span>
+            <button
+              onClick={(e) => {
+                deleteTodo(index);
+              }}
+              className="text-red-500 hover:text-red-700"
+            >
               Delete
             </button>
           </li>
