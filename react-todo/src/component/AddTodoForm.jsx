@@ -14,7 +14,7 @@ function AddTodoForm({ onAdd }) {
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="Add a new todo"
+        placeholder="Add a new todo"  // Ensure this matches the placeholder in your test
         className="flex-grow p-2 border rounded"
       />
       <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
