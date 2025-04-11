@@ -1,60 +1,59 @@
-import React, { useState } from 'react';
-import AddTodoForm from './AddTodoForm';
+import React, { useState } from "react";
 
 function TodoList() {
   const [todos, setTodos] = useState([
-    { id: 1, text: 'Learn React', completed: false },
-    { id: 2, text: 'Build a Todo App', completed: false },
+    { id: 1, text: "Learn React", completed: false },
+    { id: 2, text: "Build a Todo App", completed: false },
   ]);
+  const [newTodo, setNewTodo] = useState("");
 
-  const addTodo = (text) => {
-    if (text.trim()) {
-      const newTodo = {
-        id: Date.now(),
-        text,
-        completed: false,
-      };
-      setTodos([...todos, newTodo]);
-    }
+  // Add a new todo
+  const addTodo = (e) => {
+    e.preventDefault();
+    if (newTodo.trim() === "") return;
+    setTodos([...todos, { id: Date.now(), text: newTodo, completed: false }]);
+    setNewTodo("");
   };
 
+  // Toggle todo completion
   const toggleTodo = (id) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
     );
-    setTodos(updatedTodos);
   };
 
+  // Delete a todo
   const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
-
+  
   return (
-    <div className="todo-list max-w-md mx-auto p-6 bg-white rounded shadow">
-      <h1 className="text-3xl font-bold mb-4 text-center">Todo List</h1>
-      <ul className="space-y-2">
+    <div>
+      <h2>Todo List</h2>
+      <form onSubmit={addTodo}>
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Add a new todo"
+          className="text"
+        />
+        <button className="btn" type="submit">Add</button>
+      </form>
+      <ul>
         {todos.map((todo) => (
           <li
             key={todo.id}
             onClick={() => toggleTodo(todo.id)}
-            className={`flex items-center justify-between p-3 rounded cursor-pointer shadow-sm ${
-              todo.completed ? 'bg-gray-100 line-through text-gray-500' : 'bg-gray-50'
-            }`}
+            style={{ textDecoration: todo.completed ? "line-through" : "none" }}
           >
-            <span>{todo.text}</span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteTodo(todo.id);
-              }}
-              className="text-red-500 hover:text-red-700"
-            >
-              Delete
-            </button>
+            {todo.text}
+            <button className="btn" onClick={(e) => deleteTodo(todo.id, e)}>Delete</button>
           </li>
         ))}
       </ul>
-      <AddTodoForm onAdd={addTodo} />
     </div>
   );
 }
