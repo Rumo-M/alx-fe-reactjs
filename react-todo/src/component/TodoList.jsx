@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import AddTodoForm from './AddTodoForm'; // Make sure this path is correct
+import AddTodoForm from './AddTodoForm'; // Ensure this path is correct
 
 function TodoList() {
+  // State to manage the list of todos
   const [todos, setTodos] = useState([
     { text: 'Learn React', completed: false },
     { text: 'Build a Todo App', completed: false },
   ]);
 
+  // Function to add a new todo
   const addTodo = (todo) => {
     setTodos([...todos, { text: todo, completed: false }]);
   };
 
+  // Function to delete a todo by index
   const deleteTodo = (index) => {
     setTodos(todos.filter((_, i) => i !== index));
   };
