@@ -1,29 +1,28 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 function AddTodoForm({ onAdd }) {
-  const [inputValue, setInputValue] = useState("");
+  const [text, setText] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const trimmed = inputValue.trim();
+    const trimmed = text.trim();
     if (!trimmed) return;
     onAdd(trimmed);
-    setInputValue("");
+    setText('');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mt-4">
+    <form onSubmit={handleSubmit} className="flex gap-2">
       <input
         type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
         placeholder="Add a new todo..."
-        className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        aria-label="New todo"
+        className="flex-grow px-4 py-2 border border-gray-300 rounded"
       />
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition"
+        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
       >
         Add
       </button>
