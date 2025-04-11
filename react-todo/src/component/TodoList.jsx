@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import AddTodoForm from './components/AddTodoForm';
-import TodoItem from './components/TodoItem';
+import AddTodoForm from './AddTodoForm';
+import TodoItem from './TodoItem';
 
 function TodoList() {
   const [todos, setTodos] = useState([
@@ -9,6 +9,7 @@ function TodoList() {
   ]);
 
   const addTodo = (text) => {
+    if (text.trim() === '') return;
     setTodos([...todos, { id: Date.now(), text, completed: false }]);
   };
 
@@ -23,15 +24,15 @@ function TodoList() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-md mx-auto p-4 bg-gray-100 shadow rounded">
       <AddTodoForm onAdd={addTodo} />
-      <ul className="mt-4 space-y-2">
+      <ul className="space-y-2">
         {todos.map(todo => (
           <TodoItem
             key={todo.id}
             todo={todo}
-            onToggle={toggleTodo}
-            onDelete={deleteTodo}
+            onToggle={() => toggleTodo(todo.id)}
+            onDelete={() => deleteTodo(todo.id)}
           />
         ))}
       </ul>
