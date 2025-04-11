@@ -1,58 +1,62 @@
 import React, { useState } from 'react';
+import AddTodoForm from './AddTodoForm';
 
-const TodoList = () => {
+function TodoList() {
   const [todos, setTodos] = useState([
     { id: 1, text: 'Learn React', completed: false },
-    { id: 2, text: 'Build Todo App', completed: false },
+    { id: 2, text: 'Build a Todo App', completed: false },
   ]);
 
   const addTodo = (text) => {
-    const newTodo = {
-      id: Date.now(),
-      text,
-      completed: false,
-    };
-    setTodos((prevTodos) => [...prevTodos, newTodo]);
+    if (text.trim()) {
+      const newTodo = {
+        id: Date.now(),
+        text,
+        completed: false,
+      };
+      setTodos([...todos, newTodo]);
+    }
   };
 
   const toggleTodo = (id) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
+    setTodos(updatedTodos);
   };
 
   const deleteTodo = (id) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   return (
-    <div>
-      <h1>Todo List</h1>
-      <ul>
+    <div className="todo-list max-w-md mx-auto p-6 bg-white rounded shadow">
+      <h1 className="text-3xl font-bold mb-4 text-center">Todo List</h1>
+      <ul className="space-y-2">
         {todos.map((todo) => (
           <li
             key={todo.id}
             onClick={() => toggleTodo(todo.id)}
-            style={{
-              textDecoration: todo.completed ? 'line-through' : 'none',
-              cursor: 'pointer',
-            }}
+            className={`flex items-center justify-between p-3 rounded cursor-pointer shadow-sm ${
+              todo.completed ? 'bg-gray-100 line-through text-gray-500' : 'bg-gray-50'
+            }`}
           >
-            {todo.text}
-            <button onClick={(e) => {
-              e.stopPropagation();
-              deleteTodo(todo.id);
-            }}>
+            <span>{todo.text}</span>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTodo(todo.id);
+              }}
+              className="text-red-500 hover:text-red-700"
+            >
               Delete
             </button>
           </li>
         ))}
       </ul>
-      <button onClick={() => addTodo('New Todo')}>Add Todo</button>
+      <AddTodoForm onAdd={addTodo} />
     </div>
   );
-};
+}
 
 export default TodoList;
