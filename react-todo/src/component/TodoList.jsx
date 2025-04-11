@@ -1,26 +1,35 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import TodoList from './TodoList';
+// TodoList.jsx
+import React, { useState } from 'react';
+import AddTodoForm from './AddTodoForm';
 
-test('renders TodoList component', () => {
-  render(<TodoList />);
-  expect(screen.getByText(/Todo List/i)).toBeInTheDocument();
-  expect(screen.getByText('Learn React')).toBeInTheDocument();
-});
+function TodoList() {
+  const [todos, setTodos] = useState([
+    { text: 'Learn React', completed: false },
+    { text: 'Build a Todo App', completed: false },
+  ]);
 
-test('adds a new todo', () => {
-  render(<TodoList />);
-  const addButton = screen.getByText(/Add Todo/i);
-  fireEvent.click(addButton);
-  expect(screen.getByText('New Todo')).toBeInTheDocument();
-});
+  const addTodo = (todo) => {
+    setTodos([...todos, { text: todo, completed: false }]);
+  };
 
-test('does not show deleted todo', () => {
-  render(<TodoList />);
-  const addButton = screen.getByText(/Add Todo/i);
-  fireEvent.click(addButton);
-  const newTodo = screen.getByText('New Todo');
-  const deleteButton = newTodo.nextSibling;
-  fireEvent.click(deleteButton);
-  expect(screen.queryByText('New Todo')).not.toBeInTheDocument();
-});
+  const deleteTodo = (index) => {
+    setTodos(todos.filter((_, i) => i !== index));
+  };
 
+  return (
+    <div>
+      <h1>Todo List</h1>
+      <ul>
+        {todos.map((todo, index) => (
+          <li key={index}>
+            {todo.text}
+            <button onClick={() => deleteTodo(index)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+      <AddTodoForm onAdd={addTodo} />
+    </div>
+  );
+}
+
+export default TodoList;

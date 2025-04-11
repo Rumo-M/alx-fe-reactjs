@@ -1,3 +1,4 @@
+// AddTodoForm.jsx
 import React, { useState } from 'react';
 
 function AddTodoForm({ onAdd }) {
@@ -5,8 +6,10 @@ function AddTodoForm({ onAdd }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAdd(input);
-    setInput('');
+    if (input.trim()) {
+      onAdd(input);
+      setInput('');
+    }
   };
 
   return (
