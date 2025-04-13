@@ -1,10 +1,9 @@
-// App.jsx
 import React from "react";
-import TodoList from "./components/TodoList";
+import TodoList from "./components/TodoList"; // Adjust path if necessary
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <h1>My Todo App</h1>
       <TodoList />
     </div>
