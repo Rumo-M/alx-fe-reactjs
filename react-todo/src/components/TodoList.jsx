@@ -28,7 +28,7 @@ function TodoList() {
   const deleteTodo = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
-  
+
   return (
     <div>
       <h2>Todo List</h2>
@@ -40,17 +40,33 @@ function TodoList() {
           placeholder="Add a new todo"
           className="text"
         />
-        <button className="btn" type="submit">Add</button>
+        <button className="btn" type="submit">
+          Add
+        </button>
       </form>
       <ul>
         {todos.map((todo) => (
           <li
             key={todo.id}
             onClick={() => toggleTodo(todo.id)}
-            style={{ textDecoration: todo.completed ? "line-through" : "none" }}
+            style={{
+              textDecoration: todo.completed ? "line-through" : "none",
+              cursor: "pointer",
+              marginBottom: "8px",
+            }}
+            role="listitem"
           >
             {todo.text}
-            <button className="btn" onClick={(e) => deleteTodo(todo.id, e)}>Delete</button>
+            <button
+              className="btn"
+              onClick={(e) => {
+                e.stopPropagation(); // ✅ Prevents toggling when clicking delete
+                deleteTodo(todo.id);
+              }}
+              style={{ marginLeft: "10px" }}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
